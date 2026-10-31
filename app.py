@@ -1,10 +1,11 @@
 import gradio as gr
 from dotenv import load_dotenv
 
-from implementation.answer import answer_question
+from implementation.answer import answer_question, fetch_context
 from implementation.upload import save_uploaded_files
 from implementation.ingest import ingest_documents
 from implementation.clear_data import clear_all
+
 
 load_dotenv(override=True)
 
@@ -16,6 +17,10 @@ def format_context(context):
         result += doc.page_content + "\n\n"
     return result
 
+def retrieve_context(query):
+    result = fetch_context(query)
+    return format_context(result)
+    
 
 def chat(history):
     last_message = history[-1]["content"]
@@ -105,6 +110,8 @@ def main():
                     container=True,
                     height=600,
                 )
+                get_context = gr.Textbox(label="get context", placeholder="Type query to get context", show_label=False)
+            get_context.submit(retrieve_context, inputs=get_context, outputs=context_markdown)
             message.submit(
                 put_message_in_chatbot, inputs=[message, chatbot], outputs=[message, chatbot]
                 ).then(chat, inputs=chatbot, outputs=[chatbot, context_markdown])

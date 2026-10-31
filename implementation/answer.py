@@ -61,18 +61,7 @@ llm = ChatGoogleGenerativeAI(
 
 
 def fetch_context(question: str) -> list[Document]:
-
-    print("Question:", question)
-
     docs = retriever.invoke(question)
-
-    print("Retrieved documents:", len(docs))
-
-    for i, doc in enumerate(docs):
-        print(f"\nDocument {i + 1}:")
-        print("Source:", doc.metadata.get("source", "Unknown"))
-        print(doc.page_content[:300])
-
     return docs
 
 
