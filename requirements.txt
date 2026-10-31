@@ -1,5 +1,5 @@
 # Web UI
-gradio=6.31.0
+gradio=5.49.1
 
 # Environment Management
 python-dotenv>=1.0.0
