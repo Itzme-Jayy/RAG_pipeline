@@ -20,9 +20,21 @@ def format_context(context):
 def chat(history):
     last_message = history[-1]["content"]
     prior = history[:-1]
-    answer, context = answer_question(last_message, prior)
-    history.append({"role": "assistant", "content": answer})
-    return history, format_context(context)
+
+    try:
+        answer, context = answer_question(last_message, prior)
+        history.append({"role": "assistant", "content": answer})
+        return history, format_context(context)
+
+    except Exception as e:
+        print("Error:", e)  # Shows actual error in terminal
+
+        history.append({
+            "role": "assistant",
+            "content": "LLM is experiencing high demand. Please try again after some time."
+        })
+
+        return history, format_context(context)
 
 def upload_documents(files):
 
